@@ -1,0 +1,34 @@
+
+Computer Vision Code Format:
+
+FROM: https://www.pyimagesearch.com/2017/02/20/text-skew-correction-opencv-python/
+
+PURPOSE: Given an image containing a rotated block of text at an unknown angle, we need to correct the text skew by detecting block of text in image, computing angle of rotated text, rotating image to correct for skew
+
+#########
+# SETUP #
+#########
+
+import numpy, argparse, cv2
+argparse / get image
+
+isolate text in image by color --> greyscale, flip, binary
+# When applying computer vision and image processing operations, it’s common for the foreground to be represented as light while the background (the part of the image we are not interested in) is dark.
+
+Given this thresholded image, we can now compute the minimum rotated bounding box that contains the text regions:
+# grab the (x, y) coordinates of all pixel values that
+# are greater than zero, then use these coordinates to
+# compute a rotated bounding box that contains all coordinates
+
+Using angle = cv2.minAreaRect
+# the `cv2.minAreaRect` function returns values in the
+# range [-90, 0); as the rectangle rotates clockwise the
+# returned angle trends to 0 -- in this special case we
+# need to add 90 degrees to the angle
+if angle < -45:
+	angle = -(90 + angle)
+
+# otherwise, just take the inverse of the angle to make
+# it positive
+else:
+	angle = -angle

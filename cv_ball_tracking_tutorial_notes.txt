@@ -1,0 +1,65 @@
+
+Computer Vision Code Format:
+
+FROM: https://www.pyimagesearch.com/2015/09/14/ball-tracking-with-opencv/
+
+PURPOSE: Tracking a Colored Ball, Drawing a Contrail
+
+#########
+# SETUP #
+#########
+
+imports
+argparse
+
+set color bounds
+init deque to keep track of past positions
+init access to video stream (webcam or video file)
+
+########
+# LOOP #
+########
+
+While True:
+
+	#################
+	# ANALYZE FRAME #
+	#################
+
+	Grab current frame, handle
+	Conversions (resize, blurr, convert to HSV color space)
+	Construct binary mask for color 'green'
+	Series dialations and erosions remove small blobs in mask
+	
+	Find contours in the mask
+	Init the current (x, y) center of the ball to None
+
+	If at least one contour found:
+		Find the largest contour in the mask
+		Compute the minimum enclosing circle and centroid
+	
+		If radius meets certain size
+			Draw circle and centroid on frame
+
+	Add center (possibly None) to points queue
+
+	#################
+	# DRAW CONTRAIL #
+	#################
+	
+	Loop over the set of tracked points
+		If any tracked points (i) or (i-1) are None, ignore
+			continue
+		Otherwise, compute the line thickness (thinner at end)
+		Draw connecting lines (i to i-1)
+
+	Show frame to our screen
+	key = cv2.waitkey(1) & 0xFF
+	if key == ord(q) break while True loop
+
+if using webcam stream, stop webcam stream
+release camera
+
+cv2.destoryAllWindows()	
+
+// end
